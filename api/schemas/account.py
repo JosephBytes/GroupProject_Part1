@@ -1,10 +1,10 @@
 from datetime import datetime
 from typing import Optional
 from pydantic import BaseModel
-from typing import List, Optional
 from pydantic import BaseModel, EmailStr
 
-#account_details
+
+
 class AccountBase(BaseModel):
     email: EmailStr
     phone: int
@@ -15,7 +15,6 @@ class AccountCreate(AccountBase):
 
 class Account(AccountBase):
     account_id: int
-    orders: List[Optional[int]] = []
 
     class Config:
         orm_mode = True
