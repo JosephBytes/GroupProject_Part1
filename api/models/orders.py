@@ -8,8 +8,13 @@ class Order(Base):
     __tablename__ = "orders"
 
     id = Column(Integer, primary_key=True, index=True, autoincrement=True)
-    customer_name = Column(String(100))
-    order_date = Column(DATETIME, nullable=False, server_default=str(datetime.now()))
+    customer_name = Column(Integer, ForeignKey("account.name"))
+    tracking_number = Column(Integer, ForeignKey("order_details.id"))
+    order_status = Column(String(15))
+    total_price = Column(Integer, ForeignKey("order_details.amount"))
     description = Column(String(300))
 
-    order_details = relationship("OrderDetail", back_populates="order")
+    account = relationship("Account", back_populates="order")  # account relation
+    menu_item = relationship("Items", back_populates="order")  # menu_items relation
+    order_details = relationship("OrderDetail", back_populates="order")  # order_details relation
+
