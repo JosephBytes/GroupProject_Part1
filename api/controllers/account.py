@@ -10,6 +10,7 @@ def create(db: Session, request):
         email=request.email,
         phone=request.phone,
         address=request.address,
+        customer_name=request.customer_name,
         account_id=request.account_id
 
     )
