@@ -3,6 +3,7 @@ from typing import Optional
 from pydantic import BaseModel
 from .resources import Resource
 from .sandwiches import Sandwich
+from ..models.menu_item import Items
 
 
 class RecipeBase(BaseModel):
@@ -10,17 +11,19 @@ class RecipeBase(BaseModel):
 
 
 class RecipeCreate(RecipeBase):
-    sandwich_id: int
+    dish_id: int
     resource_id: int
 
+
 class RecipeUpdate(BaseModel):
-    sandwich_id: Optional[int] = None
+    dish_id: Optional[int] = None
     resource_id: Optional[int] = None
-    amount: Optional[int] = None
+    cost: Optional[int] = None
+
 
 class Recipe(RecipeBase):
-    id: int
-    sandwich: Sandwich = None
+    recipe_id: int
+    item: Items = None
     resource: Resource = None
 
     class ConfigDict:
