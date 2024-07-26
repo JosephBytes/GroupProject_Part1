@@ -7,7 +7,7 @@ from ..dependencies.database import Base
 class Order(Base):
     __tablename__ = "orders"
 
-    id = Column(Integer, primary_key=True, index=True, autoincrement=True)
+    order_id = Column(Integer, primary_key=True, index=True, autoincrement=True)
     customer_name = Column(Integer, ForeignKey("account.name"))
     tracking_number = Column(Integer, ForeignKey("order_details.id"))
     order_status = Column(String(15))
