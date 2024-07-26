@@ -7,8 +7,8 @@ from sqlalchemy.exc import SQLAlchemyError
 
 def create(db: Session, request):
     new_item = model.Account(
-        customer_name=request.customer_name,
-        phone_number=request.phone_number,
+        email=request.email,
+        phone=request.phone,
         address=request.address,
         account_id=request.account_id
 
