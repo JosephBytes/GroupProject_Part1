@@ -9,9 +9,9 @@ class Order(Base):
 
     order_id = Column(Integer, primary_key=True, index=True, autoincrement=True)
     customer_name = Column(Integer, ForeignKey("account.name"))
-    tracking_number = Column(Integer, ForeignKey("order_details.id"))
+    tracking_order_id = Column(Integer, ForeignKey("order_details.tracking_order_id"))
     order_status = Column(String(15))
-    total_price = Column(Integer, ForeignKey("order_details.amount"))
+    price = Column(Integer, ForeignKey("order_details.amount"))
     description = Column(String(300))
 
     account = relationship("Account", back_populates="order")  # account relation
