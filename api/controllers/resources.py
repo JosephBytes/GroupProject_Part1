@@ -6,10 +6,10 @@ from ..models import resources as model
 from sqlalchemy.exc import SQLAlchemyError
 
 def create(db: Session, resources):
-    new_item = model.Resources(
-        ingredients=request.ingredients,
+    new_item = model.Resource(
+        ingredient=request.ingredients,
         amount=request.amount,
-        unit=request.unit
+        resource_id=request.unit
 
     )
 
@@ -26,7 +26,7 @@ def create(db: Session, resources):
 
 def read_all(db: Session):
     try:
-        result = db.query(model.Resources).all()
+        result = db.query(model.Resource).all()
     except SQLAlchemyError as e:
         error = str(e.__dict__['orig'])
         raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail=error)
@@ -35,7 +35,7 @@ def read_all(db: Session):
 
 def read_one(db: Session, item_id):
     try:
-        item = db.query(model.Resources).filter(model.Resources.id == item_id).first()
+        item = db.query(model.Resource).filter(model.Resource.id == item_id).first()
         if not item:
             raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Id not found!")
     except SQLAlchemyError as e:
@@ -46,7 +46,7 @@ def read_one(db: Session, item_id):
 
 def update(db: Session, item_id, request):
     try:
-        item = db.query(model.Resources).filter(model.Resources.id == item_id)
+        item = db.query(model.Resource).filter(model.Resource.id == item_id)
         if not item.first():
             raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Id not found!")
         update_data = request.dict(exclude_unset=True)
@@ -60,7 +60,7 @@ def update(db: Session, item_id, request):
 
 def delete(db: Session, item_id):
     try:
-        item = db.query(model.Resources).filter(model.Resources.id == item_id)
+        item = db.query(model.Resource).filter(model.Resource.id == item_id)
         if not item.first():
             raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Id not found!")
         item.delete(synchronize_session=False)
