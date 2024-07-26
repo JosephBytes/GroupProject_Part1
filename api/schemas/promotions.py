@@ -2,7 +2,7 @@ from datetime import datetime
 from typing import Optional
 from pydantic import BaseModel
 
-
+#promotions
 class PromotionsBase(BaseModel):
     expiration_date: datetime
 
