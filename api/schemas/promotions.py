@@ -7,10 +7,17 @@ class PromotionsBase(BaseModel):
     expiration_date: datetime
 
 class PromotionsCreate(PromotionsBase):
-    pass
+    promotion_id: int
+    code: int
+
+class PromotionsUpdate(BaseModel):
+    promotion_id: Optional[int] = None
+    code: Optional[int] = None
+    expiration_date: Optional[datetime] = None
 
 class Promotions(PromotionsBase):
-    code: int
+    promotion_id: int
+
 
     class Config:
         orm_mode = True
