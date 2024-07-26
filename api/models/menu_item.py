@@ -7,7 +7,7 @@ from ..dependencies.database import Base
 class Items(Base):
     __tablename__ = "items"
 
-    id = Column(Integer, primary_key=True, index=True, autoincrement=True)
+    dish_id = Column(Integer, primary_key=True, index=True, autoincrement=True)
     dish = Column(String(100))
     ingredients = Column(String(100))
     price = Column(DECIMAL(4, 2))

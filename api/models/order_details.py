@@ -8,7 +8,7 @@ class OrderDetail(Base):
     # combine the order items together and give it a unique order number
     __tablename__ = "order_details"
 
-    id = Column(Integer, primary_key=True, index=True, autoincrement=True)
+    tracking_order_id = Column(Integer, primary_key=True, index=True, autoincrement=True)
     item_id = Column(Integer, ForeignKey("items.id"))
     amount = Column(Integer, ForeignKey("items.price"))
 
