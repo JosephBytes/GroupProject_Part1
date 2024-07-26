@@ -1,27 +1,28 @@
 from datetime import datetime
 from typing import Optional
 from pydantic import BaseModel
-from .sandwiches import Sandwich
+from ..models.menu_item import Items
 
 
 class OrderDetailBase(BaseModel):
-    amount: int
+    price: int
 
 
 class OrderDetailCreate(OrderDetailBase):
-    order_id: int
-    sandwich_id: int
+    tracking_order_id: int
+    dish_id: int
+
 
 class OrderDetailUpdate(BaseModel):
-    order_id: Optional[int] = None
-    sandwich_id: Optional[int] = None
-    amount: Optional[int] = None
+    tracking_order_id: Optional[int] = None
+    dish_id: Optional[int] = None
+    price: Optional[int] = None
 
 
 class OrderDetail(OrderDetailBase):
-    id: int
-    order_id: int
-    sandwich: Sandwich = None
+    tracking_order_id: int
+    dish_id: int
+    items: Items = None
 
     class ConfigDict:
         from_attributes = True
