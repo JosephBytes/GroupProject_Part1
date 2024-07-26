@@ -14,13 +14,12 @@ class PaymentCreate(PaymentBase):
 class PaymentUpdate(BaseModel):
     pass
 
+
 class Payment(PaymentBase):
     card_number: int
     status: str
     payment_type: str
     date: datetime
-
-
 
     class ConfigDict:
         from_attributes = True
