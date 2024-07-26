@@ -10,7 +10,7 @@ class OrderDetail(Base):
 
     tracking_order_id = Column(Integer, primary_key=True, index=True, autoincrement=True)
     dish_id = Column(Integer, ForeignKey("menu_item.dish_id"))
-    price = Column(Integer, ForeignKey("menu_item.price"))
+    price = Column(DECIMAL, ForeignKey("menu_item.price"))
 
     menu_items = relationship("Items", back_populates="order_details")  # menu_items relation
     orders = relationship("Order", back_populates="order_details")  # orders relation

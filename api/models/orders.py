@@ -8,10 +8,10 @@ class Order(Base):
     __tablename__ = "orders"
 
     order_id = Column(Integer, primary_key=True, index=True, autoincrement=True)
-    customer_name = Column(Integer, ForeignKey("account.name"))
+    customer_name = Column(String, ForeignKey("account.name"))
     tracking_order_id = Column(Integer, ForeignKey("order_details.tracking_order_id"))
     order_status = Column(String(15))
-    price = Column(Integer, ForeignKey("order_details.amount"))
+    price = Column(DECIMAL, ForeignKey("order_details.amount"))
     description = Column(String(300))
 
     account = relationship("Account", back_populates="order")  # account relation
