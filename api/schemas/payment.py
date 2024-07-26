@@ -1,6 +1,5 @@
 from typing import Optional
 from pydantic import BaseModel
-from .payment import Payment
 
 
 class PaymentBase(BaseModel):
@@ -12,12 +11,11 @@ class PaymentCreate(PaymentBase):
 
 
 class PaymentUpdate(BaseModel):
-    sandwich_name: Optional[str] = None
-    price: Optional[float] = None
-
+    pass
 
 class Payment(PaymentBase):
-    id: int
+    code: int
+
 
     class ConfigDict:
         from_attributes = True

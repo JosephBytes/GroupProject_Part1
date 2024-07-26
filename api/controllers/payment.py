@@ -3,13 +3,11 @@ from fastapi import HTTPException, status, Response, Depends
 from ..models import payment as model
 from sqlalchemy.exc import SQLAlchemyError
 
-#
 def create(db: Session, request):
     new_item = model.Payment(
         card_number=request.card_number,
         transaction_status=request.transaction_status,
         payment_type=request.payment_type
-
     )
 
     try:
