@@ -22,7 +22,7 @@ class OrderUpdate(BaseModel):
 class Order(OrderBase):
     id: int
     order_date: Optional[datetime] = None
-    order_details: list[OrderDetail] = None
+    order_status: Optional[str] = None
 
     class ConfigDict:
         from_attributes = True
