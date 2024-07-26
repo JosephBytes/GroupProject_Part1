@@ -16,8 +16,6 @@ class Items(Base):
 
     recipes = relationship("Recipe", back_populates="items")
     order_details = relationship("OrderDetail", back_populates="items")
-    items = relationship("Items", back_populates="order_details")
-    order = relationship("Order", back_populates="order_details")
 
 
 
