@@ -8,11 +8,11 @@ class PaymentBase(BaseModel):
 
 
 class PaymentCreate(PaymentBase):
-    pass
+    payment_type = Optional[str]
 
 
 class PaymentUpdate(BaseModel):
-    pass
+    status: Optional[str]
 
 
 class Payment(PaymentBase):
