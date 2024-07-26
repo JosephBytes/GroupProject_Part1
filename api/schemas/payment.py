@@ -11,6 +11,7 @@ class PaymentCreate(PaymentBase):
 
 
 class PaymentUpdate(BaseModel):
+    pass
 
 class Payment(PaymentBase):
     code: int
