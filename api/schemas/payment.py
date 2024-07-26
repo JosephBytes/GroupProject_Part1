@@ -1,5 +1,6 @@
 from typing import Optional
 from pydantic import BaseModel
+from datetime import datetime
 
 
 class PaymentBase(BaseModel):
@@ -13,9 +14,12 @@ class PaymentCreate(PaymentBase):
 class PaymentUpdate(BaseModel):
     pass
 
-class Payment(PaymentBase):
-    code: int
 
+class Payment(PaymentBase):
+    card_number: int
+    status: str
+    payment_type: str
+    date: datetime
 
     class ConfigDict:
         from_attributes = True
