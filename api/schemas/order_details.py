@@ -1,7 +1,6 @@
 from datetime import datetime
 from typing import Optional
 from pydantic import BaseModel
-from ..models.menu_item import Items
 
 
 class OrderDetailBase(BaseModel):
@@ -22,7 +21,6 @@ class OrderDetailUpdate(BaseModel):
 class OrderDetail(OrderDetailBase):
     tracking_order_id: int
     dish_id: int
-    items: Items = None
 
     class ConfigDict:
         from_attributes = True

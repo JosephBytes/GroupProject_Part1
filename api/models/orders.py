@@ -13,8 +13,8 @@ class Order(Base):
     order_status = Column(String(15))
     price = Column(DECIMAL, ForeignKey("order_details.amount"))
     description = Column(String(300))
+    order_date = Column(DATETIME)
 
     account = relationship("Account", back_populates="order")  # account relation
-    menu_item = relationship("Items", back_populates="order")  # menu_items relation
     order_details = relationship("OrderDetail", back_populates="order")  # order_details relation
 
