@@ -6,7 +6,6 @@ from pydantic import BaseModel
 class OrderBase(BaseModel):
     order_status: str
     description: str
-    tracking_order_id: Optional[int] = None
 
 
 class OrderCreate(OrderBase):
