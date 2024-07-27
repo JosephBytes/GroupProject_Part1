@@ -6,7 +6,7 @@ from .models import model_loader
 from .dependencies.config import conf
 from sqlalchemy.orm import Session
 
-from .controllers import account
+from .controllers import orders
 from .controllers import menu_item
 from .controllers import order_details
 from .controllers import account
@@ -30,34 +30,34 @@ app.add_middleware(
 
 #not sure if this is the right implementation at all, but wanted to give it a go
 
-#account
-@app.post("/account/", response_model=account.Order, tags=["account"])
-def create_order(order: account.accountCreate, db: Session):
-    return order.create(db=db, account=account)
+#orders
+@app.post("/orders/", response_model=orders.Order, tags=["account"])
+def create_order(order: orders.OrderCreate, db: Session):
+    return order.create(db=db, order=order)
 
 
-@app.get("/account/", response_model=list[account.Order], tags=["account"])
+@app.get("/orders/", response_model=list[orders.Order], tags=["account"])
 def read_account(db: Session):
     return account.read_all(db)
 
 
-@app.get("/account/{order_id}", response_model=account.Order, tags=["account"])
+@app.get("/orders/{order_id}", response_model=orders.Order, tags=["account"])
 def read_one_order(order_id: int, db: Session):
-    order = account.read_one(db, order_id=order_id)
+    order = orders.read_one(db,  item_id=order_id)
     if order is None:
         raise HTTPException(status_code=404, detail="User not found")
     return order
 
 
-@app.put("/account/{order_id}", response_model=account.Order, tags=["account"])
-def update_one_order(order_id: int, order: account.OrderUpdate, db: Session):
-    order_db = account.read_one(db, item_id=order_id)
+@app.put("/orders/{order_id}", response_model=orders.Order, tags=["account"])
+def update_one_order(order_id: int, order: orders.OrderUpdate, db: Session):
+    order_db = orders.read_one(db, item_id=order_id)
     if order_db is None:
         raise HTTPException(status_code=404, detail="User not found")
-    return account.update(db=db, order=order, item_id=order_id)
+    return order.update(db=db, order=order,  item_id=order_id)
 
 
-@app.delete("/account/{order_id}", tags=["account"])
+@app.delete("/orders/{order_id}", tags=["account"])
 def delete_one_order(order_id: int, db: Session):
     order = account.read_one(db, item_id=order_id)
     if order is None:
