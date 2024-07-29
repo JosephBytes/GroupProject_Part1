@@ -1,4 +1,3 @@
-
 from fastapi import APIRouter, Depends, status, Response
 from sqlalchemy.orm import Session
 from ..controllers import menu_item as controller
@@ -9,6 +8,7 @@ router = APIRouter(
     tags=['Menu_item'],
     prefix="/menu_item"
 )
+
 
 @router.post("/", response_model=schema.Items)
 def create(request: schema.ItemsCreate, db: Session = Depends(get_db)):

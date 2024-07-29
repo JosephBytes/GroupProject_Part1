@@ -44,7 +44,7 @@ def read_account(db: Session = Depends(get_db)):
 
 @app.get("/orders/{order_id}", response_model=orders.Order, tags=["orders"])
 def read_one_order(order_id: int, db: Session = Depends(get_db)):
-    order = orders.read_one(db,  item_id=order_id)
+    order = orders.read_one(db,  order_id=order_id)
     if order is None:
         raise HTTPException(status_code=404, detail="User not found")
     return order
@@ -52,7 +52,7 @@ def read_one_order(order_id: int, db: Session = Depends(get_db)):
 
 @app.put("/orders/{order_id}", response_model=orders.Order, tags=["orders"])
 def update_one_order(order_id: int, order: orders.OrderUpdate, db: Session = Depends(get_db)):
-    order_db = orders.read_one(db, item_id=order_id)
+    order_db = orders.read_one(db, order_id=order_id)
     if order_db is None:
         raise HTTPException(status_code=404, detail="User not found")
     return order.update(db=db, order=order,  item_id=order_id)
@@ -141,7 +141,7 @@ def read_order_details(db: Session = Depends(get_db)):
 
 @app.get("/order_details/{order_details_id}", response_model=order_details.OrderDetail, tags=["OrderDetail"])
 def read_one_order_detail(order_details_id: int, db: Session = Depends(get_db)):
-    order_detail = order_details.read_one(db, item_id=order_details_id)
+    order_detail = order_details.read_one(db, tracking_order_id=order_details_id)
     if order_detail is None:
         raise HTTPException(status_code=404, detail="User not found")
     return order_detail
@@ -158,7 +158,7 @@ def update_one_order_detail(order_details_id: int, order_detail: order_details.O
 
 @app.delete("/order_details/{order_details_id}", tags=["OrderDetail"])
 def delete_one_order_detail(order_details_id: int, db: Session = Depends(get_db)):
-    order_detail = order_details.read_one(db, item_id=order_details_id)
+    order_detail = order_details.read_one(db, tracking_order_id=order_details_id)
     if order_detail is None:
         raise HTTPException(status_code=404, detail="User not found")
     return order_detail.delete(db=db, order_details_id=order_details_id)
@@ -171,7 +171,7 @@ def read_account(db: Session = Depends(get_db)):
 
 @app.get("/account/{order_id}", response_model=account.Account, tags=["account"])
 def read_one_account(account_id: int, db: Session = Depends(get_db)):
-    accounts = account.read_one(db, item_id=account_id)
+    accounts = account.read_one(db, account_id=account_id)
     if accounts is None:
         raise HTTPException(status_code=404, detail="User not found")
     return accounts
@@ -187,7 +187,7 @@ def update_one_account(account_id: int, account: account.AccountUpdate, db: Sess
 
 @app.delete("/account/{account_id}", tags=["account"])
 def delete_one_account(account_id: int, db: Session = Depends(get_db)):
-    accounts = account.read_one(db, item_id=account_id)
+    accounts = account.read_one(db, account_id=account_id)
     if accounts is None:
         raise HTTPException(status_code=404, detail="User not found")
     return account.delete(db=db, item_id=menu_item)
@@ -273,7 +273,7 @@ def read_items(db: Session = Depends(get_db)):
 
 @app.get("/menu_item/{dish_id}", response_model=menu_item.Items, tags=["items"])
 def read_one_item(dish_id: int, db: Session = Depends(get_db)):
-    item = menu_item.read_one(db, item_id=dish_id)
+    item = menu_item.read_one(db, dish_id=dish_id)
     if item is None:
         raise HTTPException(status_code=404, detail="User not found")
     return item
@@ -289,7 +289,7 @@ def update_one_item(dish_id: int, item: menu_item.ItemsUpdate, db: Session = Dep
 
 @app.delete("/menu_item/{dish_id}", tags=["items"])
 def delete_one_item(dish_id: int, db: Session = Depends(get_db)):
-    item = menu_item.read_one(db, item_id=dish_id)
+    item = menu_item.read_one(db, dish_id=dish_id)
     if item is None:
         raise HTTPException(status_code=404, detail="User not found")
     return item.delete(db=db, item_id=dish_id)
