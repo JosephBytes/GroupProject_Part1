@@ -9,7 +9,7 @@ class ResourceBase(BaseModel):
 
 
 class ResourceCreate(ResourceBase):
-    pass
+    resource_id: int
 
 
 class ResourceUpdate(BaseModel):
@@ -18,6 +18,7 @@ class ResourceUpdate(BaseModel):
 
 
 class Resource(ResourceBase):
+    resource_id: int
     id: int
 
     class ConfigDict:
