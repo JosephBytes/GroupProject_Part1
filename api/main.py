@@ -21,7 +21,7 @@ app.add_middleware(
 )
 
 
-#orders
+# orders
 @app.post("/orders/", response_model=orders, tags=["orders"])
 def create_order(order: orders.create, db: Session = Depends(get_db)):
     return order.create(db=db, order=order)
@@ -56,7 +56,7 @@ def delete_one_order(order_id: int, db: Session = Depends(get_db)):
     return orders.delete(db=db, order_id=order_id)
 
 
-#resources
+# resources
 @app.post("/resources/", response_model=resources, tags=["resources"])
 def create_resource(resource: resources.create, db: Session = Depends(get_db)):
     return resource.create(db=db, resource=resource)
@@ -91,42 +91,42 @@ def delete_one_resource(resources_id: int, db: Session = Depends(get_db)):
     return resource.delete(db=db, resources_id=resources_id)
 
 
-#recipes
-@app.post("/recipes/", response_model=recipes.Recipe, tags=["Recipe"])
-def create_recipe(recipe: recipes.RecipeCreate, db: Session = Depends(get_db)):
+# recipes
+@app.post("/recipes/", response_model=recipes, tags=["recipes"])
+def create_recipe(recipe: recipes.create, db: Session = Depends(get_db)):
     return recipe.create(db=db, recipe=recipe)
 
 
-@app.get("/recipes/", response_model=list[recipes.Recipe], tags=["Recipe"])
+@app.get("/recipes/", response_model=list[recipes], tags=["recipes"])
 def read_recipes(db: Session = Depends(get_db)):
     return recipes.read_all(db)
 
 
-@app.get("/recipes/{recipes_id}", response_model=recipes.Recipe, tags=["Recipe"])
+@app.get("/recipes/{recipes_id}", response_model=recipes, tags=["recipes"])
 def read_one_recipe(recipes_id: int, db: Session = Depends(get_db)):
-    recipe = recipes.read_one(db, item_id=recipes_id)
+    recipe = recipes.read_one(db, recipe_id=recipes_id)
     if recipe is None:
         raise HTTPException(status_code=404, detail="User not found")
     return recipe
 
 
-@app.put("/recipes/{recipes_id}", response_model=recipes.Recipe, tags=["Recipe"])
-def update_one_recipe(recipes_id: int, recipe: recipes.RecipeUpdate, db: Session = Depends(get_db)):
-    recipe_db = recipe.read_one(db, item_id=recipes_id)
+@app.put("/recipes/{recipes_id}", response_model=recipes, tags=["recipes"])
+def update_one_recipe(recipes_id: int, recipe: recipes.update, db: Session = Depends(get_db)):
+    recipe_db = recipe.read_one(db, recipe_id=recipes_id)
     if recipe_db is None:
         raise HTTPException(status_code=404, detail="User not found")
-    return recipe.update(db=db, recipe=recipe, item_id=recipes_id)
+    return recipe.update(db=db, recipe=recipe, recipes_id=recipes_id)
 
 
-@app.delete("/recipes/{recipes_id}", tags=["Recipe"])
-def delete_one_recipe(recipes_id: int, db: Session = Depends(get_db)):
-    recipe = recipes.read_one(db, item_id=recipes_id)
+@app.delete("/recipes/{recipes_id}", response_model=recipes, tags=["recipes"])
+def delete_one_recipe(recipes_id: int, recipe: recipes.delete, db: Session = Depends(get_db)):
+    recipe = recipes.read_one(db, recipe_id=recipes_id)
     if recipe is None:
         raise HTTPException(status_code=404, detail="User not found")
-    return recipe.delete(db=db, item_id=recipes_id)
+    return recipe.delete(db=db, recipe_id=recipes_id)
 
 
-#order details
+# order_details
 @app.post("/order_details/", response_model=order_details.OrderDetail, tags=["OrderDetail"])
 def create_order_detail(order_detail: order_details.OrderDetailCreate, db: Session = Depends(get_db)):
     return order_detail.create(db=db, item_id=order_detail)
