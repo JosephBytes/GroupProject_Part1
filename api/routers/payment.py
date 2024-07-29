@@ -1,30 +1,35 @@
-from fastapi import APIRouter, Depends, status, Response
+from fastapi import APIRouter, Depends, FastAPI, status, Response
 from sqlalchemy.orm import Session
 from ..controllers import payment as controller
 from ..schemas import payment as schema
-from ..dependencies.database import get_db
+from ..dependencies.database import engine, get_db
 
 router = APIRouter(
-    tags=['Payments'],
-    prefix="/payments"
+    tags=['Payment'],
+    prefix="/payment"
 )
 
-@router.post("/", response_model=schema.Payment, status_code=status.HTTP_201_CREATED)
+
+@router.post("/", response_model=schema.Payment)
 def create(request: schema.PaymentCreate, db: Session = Depends(get_db)):
     return controller.create(db=db, request=request)
+
 
 @router.get("/", response_model=list[schema.Payment])
 def read_all(db: Session = Depends(get_db)):
     return controller.read_all(db)
 
-@router.get("/{item_id}", response_model=schema.Payment)
-def read_one(item_id: int, db: Session = Depends(get_db)):
-    return controller.read_one(db, item_id=item_id)
 
-@router.put("/{item_id}", response_model=schema.Payment)
-def update(item_id: int, request: schema.PaymentUpdate, db: Session = Depends(get_db)):
-    return controller.update(db=db, request=request, item_id=item_id)
+@router.get("/{card_number}", response_model=schema.Payment)
+def read_one(card_number: int, db: Session = Depends(get_db)):
+    return controller.read_one(db, card_number=card_number)
 
-@router.delete("/{item_id}", status_code=status.HTTP_204_NO_CONTENT)
-def delete(item_id: int, db: Session = Depends(get_db)):
-    return controller.delete(db=db, item_id=item_id)
+
+@router.put("/{card_number}", response_model=schema.Payment)
+def update(card_number: int, request: schema.PaymentUpdate, db: Session = Depends(get_db)):
+    return controller.update(db=db, request=request, card_number=card_number)
+
+
+@router.delete("/{card_number}")
+def delete(card_number: int, db: Session = Depends(get_db)):
+    return controller.delete(db=db, card_number=card_number)

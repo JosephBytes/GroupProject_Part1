@@ -1,3 +1,4 @@
+
 from fastapi import APIRouter, Depends, status, Response
 from sqlalchemy.orm import Session
 from ..controllers import menu_item as controller
@@ -9,22 +10,26 @@ router = APIRouter(
     prefix="/menu_item"
 )
 
-@router.post("/", response_model=schema.Menu_item, status_code=status.HTTP_201_CREATED)
-def create(request: schema.MenuItemCreate, db: Session = Depends(get_db)):
+@router.post("/", response_model=schema.Items)
+def create(request: schema.ItemsCreate, db: Session = Depends(get_db)):
     return controller.create(db=db, request=request)
 
-@router.get("/", response_model=list[schema.Menu_item])
+
+@router.get("/", response_model=list[schema.Items])
 def read_all(db: Session = Depends(get_db)):
     return controller.read_all(db)
 
-@router.get("/{item_id}", response_model=schema.Menu_item)
-def read_one(item_id: int, db: Session = Depends(get_db)):
-    return controller.read_one(db, item_id=item_id)
 
-@router.put("/{item_id}", response_model=schema.Menu_item)
-def update(item_id: int, request: schema.MenuItemUpdate, db: Session = Depends(get_db)):
-    return controller.update(db=db, request=request, item_id=item_id)
+@router.get("/{dish_id}", response_model=schema.Items)
+def read_one(dish_id: int, db: Session = Depends(get_db)):
+    return controller.read_one(db, dish_id=dish_id)
 
-@router.delete("/{item_id}", status_code=status.HTTP_204_NO_CONTENT)
-def delete(item_id: int, db: Session = Depends(get_db)):
-    return controller.delete(db=db, item_id=item_id)
+
+@router.put("/{dish_id}", response_model=schema.Items)
+def update(dish_id: int, request: schema.ItemsUpdate, db: Session = Depends(get_db)):
+    return controller.update(db=db, request=request, dish_id=dish_id)
+
+
+@router.delete("/{dish_id}")
+def delete(dish_id: int, db: Session = Depends(get_db)):
+    return controller.delete(db=db, dish_id=dish_id)
