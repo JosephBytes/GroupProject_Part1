@@ -1,21 +1,12 @@
 import uvicorn
 from fastapi import Depends, FastAPI, HTTPException
+from sqlalchemy.orm import Session
 from fastapi.middleware.cors import CORSMiddleware
-from .routers import index as indexRoute
-from .models import model_loader
+
+from .models import account, menu_item, model_loader, order_details, orders, payment, promotions, recipes, resources
+from .controllers import orders, menu_item, order_details, account, payment, promotions, recipes, resources
 from .dependencies.config import conf
 from .dependencies.database import engine, get_db
-from sqlalchemy.orm import Session
-
-from .controllers import orders
-from .controllers import menu_item
-from .controllers import order_details
-from .controllers import account
-from .controllers import payment
-from .controllers import promotions
-from .controllers import recipes
-from .controllers import resources
-
 app = FastAPI()
 
 origins = ["*"]
@@ -29,15 +20,13 @@ app.add_middleware(
 )
 
 
-#not sure if this is the right implementation at all, but wanted to give it a go
-
 #orders
-@app.post("/orders/", response_model=orders.Order, tags=["orders"])
-def create_order(order: orders.OrderCreate, db: Session = Depends(get_db)):
+@app.post("/orders/", response_model=schemas.Order, tags=["orders"])
+def create_order(order: schemas.OrderCreate, db: Session = Depends(get_db)):
     return order.create(db=db, order=order)
 
 
-@app.get("/orders/", response_model=list[orders.Order], tags=["orders"])
+@app.get("/orders/", response_model=list[sch.Order], tags=["orders"])
 def read_account(db: Session = Depends(get_db)):
     return account.read_all(db)
 
