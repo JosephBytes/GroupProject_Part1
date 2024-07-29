@@ -6,6 +6,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from .models import account, menu_item, model_loader, order_details, orders, payment, promotions, recipes, resources
 from .controllers import orders, menu_item, order_details, account, payment, promotions, recipes, resources
 from .dependencies.config import conf
+from .routers import index
 from .dependencies.database import engine, get_db
 
 app = FastAPI()
@@ -298,7 +299,7 @@ def delete_one_item(dish_id: int, db: Session = Depends(get_db)):
 
 
 model_loader.index()
-indexRoute.load_routes(app)
+index.load_routes(app)
 
 if __name__ == "__main__":
     uvicorn.run(app, host=conf.app_host, port=conf.app_port)
