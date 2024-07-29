@@ -33,3 +33,4 @@ def update(promotion_id: int, request: schema.PromotionsUpdate, db: Session = De
 @router.delete("/{promotion_id}", status_code=status.HTTP_204_NO_CONTENT)
 def delete(promotion_id: int, db: Session = Depends(get_db)):
     return controller.delete(db=db, promotion_id=promotion_id)
+
