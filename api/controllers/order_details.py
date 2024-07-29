@@ -31,9 +31,9 @@ def read_all(db: Session):
     return result
 
 
-def read_one(db: Session, item_id):
+def read_one(db: Session, tracking_order_id):
     try:
-        item = db.query(model.OrderDetail).filter(model.OrderDetail.id == item_id).first()
+        item = db.query(model.OrderDetail).filter(model.OrderDetail.tracking_order_id == tracking_order_id).first()
         if not item:
             raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Id not found!")
     except SQLAlchemyError as e:
@@ -42,9 +42,9 @@ def read_one(db: Session, item_id):
     return item
 
 
-def update(db: Session, item_id, request):
+def update(db: Session, tracking_order_id, request):
     try:
-        item = db.query(model.OrderDetail).filter(model.OrderDetail.id == item_id)
+        item = db.query(model.OrderDetail).filter(model.OrderDetail.tracking_order_id == tracking_order_id)
         if not item.first():
             raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Id not found!")
         update_data = request.dict(exclude_unset=True)
@@ -54,11 +54,11 @@ def update(db: Session, item_id, request):
         error = str(e.__dict__['orig'])
         raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail=error)
     return item.first()
-#hello trying this once again
 
-def delete(db: Session, item_id):
+
+def delete(db: Session, tracking_order_id):
     try:
-        item = db.query(model.OrderDetail).filter(model.OrderDetail.id == item_id)
+        item = db.query(model.OrderDetail).filter(model.OrderDetail.tracking_order_id == tracking_order_id)
         if not item.first():
             raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Id not found!")
         item.delete(synchronize_session=False)
