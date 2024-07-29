@@ -7,6 +7,7 @@ from .models import account, menu_item, model_loader, order_details, orders, pay
 from .controllers import orders, menu_item, order_details, account, payment, promotions, recipes, resources
 from .dependencies.config import conf
 from .dependencies.database import engine, get_db
+
 app = FastAPI()
 
 origins = ["*"]
@@ -33,7 +34,7 @@ def read_account(db: Session = Depends(get_db)):
 
 @app.get("/orders/{order_id}", response_model=orders, tags=["orders"])
 def read_one_order(order_id: int, db: Session = Depends(get_db)):
-    order = orders.read_one(db,  order_id=order_id)
+    order = orders.read_one(db, order_id=order_id)
     if order is None:
         raise HTTPException(status_code=404, detail="User not found")
     return order
@@ -44,7 +45,7 @@ def update_one_order(order_id: int, order: orders.update, db: Session = Depends(
     order_db = orders.read_one(db, order_id=order_id)
     if order_db is None:
         raise HTTPException(status_code=404, detail="User not found")
-    return order.update(db=db, order=order,  order_id=order_id)
+    return order.update(db=db, order=order, order_id=order_id)
 
 
 @app.delete("/orders/{order_id}", tags=["orders"])
@@ -124,6 +125,7 @@ def delete_one_recipe(recipes_id: int, db: Session = Depends(get_db)):
         raise HTTPException(status_code=404, detail="User not found")
     return recipe.delete(db=db, item_id=recipes_id)
 
+
 #order details
 @app.post("/order_details/", response_model=order_details.OrderDetail, tags=["OrderDetail"])
 def create_order_detail(order_detail: order_details.OrderDetailCreate, db: Session = Depends(get_db)):
@@ -159,6 +161,7 @@ def delete_one_order_detail(order_details_id: int, db: Session = Depends(get_db)
         raise HTTPException(status_code=404, detail="User not found")
     return order_detail.delete(db=db, order_details_id=order_details_id)
 
+
 #accounts
 @app.get("/account/", response_model=list[account.Account], tags=["account"])
 def read_account(db: Session = Depends(get_db)):
@@ -187,6 +190,7 @@ def delete_one_account(account_id: int, db: Session = Depends(get_db)):
     if accounts is None:
         raise HTTPException(status_code=404, detail="User not found")
     return account.delete(db=db, item_id=menu_item)
+
 
 #payment
 @app.post("/payment/", response_model=payment.Payment, tags=["payments"])
@@ -222,6 +226,7 @@ def delete_one_payment(payment_id: int, db: Session = Depends(get_db)):
         raise HTTPException(status_code=404, detail="User not found")
     return payment.delete(db=db, item_id=menu_item)
 
+
 #promotions
 @app.post("/promotions/", response_model=promotions.Promotions, tags=["promotions"])
 def create_promotions(promotions: promotions.PromotionsCreate, db: Session = Depends(get_db)):
@@ -255,6 +260,7 @@ def delete_one_promotion(promotion_id: int, db: Session = Depends(get_db)):
     if promotion is None:
         raise HTTPException(status_code=404, detail="User not found")
     return promotions.delete(db=db, item_id=promotion_id)
+
 
 #menu idems
 @app.post("/menu_item/", response_model=menu_item.Items, tags=["items"])
