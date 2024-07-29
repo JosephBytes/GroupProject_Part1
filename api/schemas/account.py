@@ -1,20 +1,29 @@
 from datetime import datetime
 from typing import Optional
 from pydantic import BaseModel
-from typing import List, Optional
-from pydantic import BaseModel, EmailStr
+
 
 class AccountBase(BaseModel):
-    email: EmailStr
+    customer_name: str
+
+
+class AccountCreate(AccountBase):
+    account_id: int
+    email: str
     phone: int
     address: str
 
-class AccountCreate(AccountBase):
-    pass
+
+class AccountUpdate(AccountBase):
+    customer_name: Optional[str] = None
+    email: Optional[str] = None
+    phone: Optional[int] = None
+    address: Optional[str] = None
+
 
 class Account(AccountBase):
     account_id: int
-    orders: List[Optional[int]] = []
+    orders: int
 
     class Config:
         orm_mode = True
