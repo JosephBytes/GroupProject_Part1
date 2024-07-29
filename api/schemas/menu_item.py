@@ -2,24 +2,24 @@ from datetime import datetime
 from typing import Optional
 from pydantic import BaseModel
 
-class ItemBase(BaseModel):
+class ItemsBase(BaseModel):
     dish: str
     ingredients: str
     price: float
     calories: int
     category: str
 
-class ItemCreate(ItemBase):
+class ItemsCreate(ItemsBase):
     pass
 
-class ItemUpdate(BaseModel):
+class ItemsUpdate(BaseModel):
     dish: Optional[str] = None
     ingredients: Optional[str] = None
     price: Optional[float] = None
     calories: Optional[int] = None
     category: Optional[str] = None
 
-class Item(ItemBase):
+class Items(ItemsBase):
     dish_id: int
 
     class Config:
