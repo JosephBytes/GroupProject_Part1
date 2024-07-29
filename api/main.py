@@ -1,9 +1,10 @@
 import uvicorn
-from fastapi import FastAPI, HTTPException
+from fastapi import Depends, FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from .routers import index as indexRoute
 from .models import model_loader
 from .dependencies.config import conf
+from .dependencies.database import engine, get_db
 from sqlalchemy.orm import Session
 
 from .controllers import orders
@@ -192,6 +193,72 @@ def delete_one_account(account_id: int, db: Session):
     return account.delete(db=db, item_id=menu_item)
 
 #payment
+@app.post("/payment/", response_model=payment.Payment, tags=["payments"])
+def create_payments(payment: payment.PaymentCreate, db: Session = Depends(get_db)):
+    return payment.create(db=db, payment=payment)
+
+
+@app.get("/payment/", response_model=list[account.Payment], tags=["payment"])
+def read_payment(db: Session):
+    return payment.read_all(db)
+
+
+@app.get("/account/{order_id}", response_model=payment.Payment, tags=["payment"])
+def read_one_payment(payment_id: int, db: Session):
+    payments = payment.read_one(db, item_id=payment_id)
+    if payments is None:
+        raise HTTPException(status_code=404, detail="User not found")
+    return payments
+
+
+@app.put("/account/{account_id}", response_model=payment.Payment, tags=["payment"])
+def update_one_payment(payment_id: int, payment: payment.PaymentUpdate, db: Session):
+    payment_db = payment.read_one(db, item_id=payment_id)
+    if payment_db is None:
+        raise HTTPException(status_code=404, detail="User not found")
+    return payment.update(db=db, payment=payment, item_id=payment_id)
+
+
+@app.delete("/payment/{payment_id}", tags=["payment"])
+def delete_one_payment(payment_id: int, db: Session):
+    payments = account.read_one(db, item_id=payment_id)
+    if payments is None:
+        raise HTTPException(status_code=404, detail="User not found")
+    return payment.delete(db=db, item_id=menu_item)
+
+#promotions
+@app.post("/promotions/", response_model=promotions.Promotions, tags=["promotions"])
+def create_promotions(promotions: promotions.PromotionsCreate, db: Session = Depends(get_db)):
+    return promotions.create(db=db, promotions=promotions)
+
+
+@app.get("/promotions/", response_model=list[promotions.Promotions], tags=["promotions"])
+def read_promotions(db: Session):
+    return promotions.read_all(db)
+
+
+@app.get("/promotions/{order_id}", response_model=promotions.Promotions, tags=["promotions"])
+def read_one_promotions(promotions_id: int, db: Session):
+    promotion = promotions.read_one(db, item_id=promotions_id)
+    if promotion is None:
+        raise HTTPException(status_code=404, detail="User not found")
+    return promotion
+
+
+@app.put("/promotions/{account_id}", response_model=promotions.Promotions, tags=["promotions"])
+def update_one_promotions(promotions_id: int, promotions: promotions.PromotionsUpdate, db: Session):
+    promotions_db = promotions.read_one(db, item_id=promotions_id)
+    if promotions_db is None:
+        raise HTTPException(status_code=404, detail="User not found")
+    return promotions.update(db=db, promotions=promotions, item_id=promotions_id)
+
+
+@app.delete("/promotions/{promotion_id}", tags=["promotions"])
+def delete_one_promotion(promotions_id: int, db: Session):
+    promotion = promotions.read_one(db, item_id=promotions_id)
+    if promotion is None:
+        raise HTTPException(status_code=404, detail="User not found")
+    return promotions.delete(db=db, item_id=menu_item)
 
 
 model_loader.index()
