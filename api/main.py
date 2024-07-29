@@ -32,17 +32,17 @@ app.add_middleware(
 #not sure if this is the right implementation at all, but wanted to give it a go
 
 #orders
-@app.post("/orders/", response_model=orders.Order, tags=["account"])
+@app.post("/orders/", response_model=orders.Order, tags=["orders"])
 def create_order(order: orders.OrderCreate, db: Session):
     return order.create(db=db, order=order)
 
 
-@app.get("/orders/", response_model=list[orders.Order], tags=["account"])
+@app.get("/orders/", response_model=list[orders.Order], tags=["orders"])
 def read_account(db: Session):
     return account.read_all(db)
 
 
-@app.get("/orders/{order_id}", response_model=orders.Order, tags=["account"])
+@app.get("/orders/{order_id}", response_model=orders.Order, tags=["orders"])
 def read_one_order(order_id: int, db: Session):
     order = orders.read_one(db,  item_id=order_id)
     if order is None:
@@ -50,7 +50,7 @@ def read_one_order(order_id: int, db: Session):
     return order
 
 
-@app.put("/orders/{order_id}", response_model=orders.Order, tags=["account"])
+@app.put("/orders/{order_id}", response_model=orders.Order, tags=["orders"])
 def update_one_order(order_id: int, order: orders.OrderUpdate, db: Session):
     order_db = orders.read_one(db, item_id=order_id)
     if order_db is None:
@@ -58,7 +58,7 @@ def update_one_order(order_id: int, order: orders.OrderUpdate, db: Session):
     return order.update(db=db, order=order,  item_id=order_id)
 
 
-@app.delete("/orders/{order_id}", tags=["account"])
+@app.delete("/orders/{order_id}", tags=["orders"])
 def delete_one_order(order_id: int, db: Session):
     order = account.read_one(db, item_id=order_id)
     if order is None:
