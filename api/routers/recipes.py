@@ -9,22 +9,26 @@ router = APIRouter(
     prefix="/recipes"
 )
 
-@router.post("/", response_model=schema.Recipes, status_code=status.HTTP_201_CREATED)
-def create(request: schema.RecipesCreate, db: Session = Depends(get_db)):
+@router.post("/", response_model=schema.Recipe)
+def create(request: schema.RecipeCreate, db: Session = Depends(get_db)):
     return controller.create(db=db, request=request)
 
-@router.get("/", response_model=list[schema.Recipes])
+
+@router.get("/", response_model=list[schema.Recipe])
 def read_all(db: Session = Depends(get_db)):
     return controller.read_all(db)
 
-@router.get("/{item_id}", response_model=schema.Recipes)
-def read_one(item_id: int, db: Session = Depends(get_db)):
-    return controller.read_one(db, item_id=item_id)
 
-@router.put("/{item_id}", response_model=schema.Recipes)
-def update(item_id: int, request: schema.RecipesUpdate, db: Session = Depends(get_db)):
-    return controller.update(db=db, request=request, item_id=item_id)
+@router.get("/{recipe_id}", response_model=schema.Recipe)
+def read_one(recipe_id: int, db: Session = Depends(get_db)):
+    return controller.read_one(db, recipe_id=recipe_id)
 
-@router.delete("/{item_id}", status_code=status.HTTP_204_NO_CONTENT)
-def delete(item_id: int, db: Session = Depends(get_db)):
-    return controller.delete(db=db, item_id=item_id)
+
+@router.put("/{recipe_id}", response_model=schema.Recipe)
+def update(recipe_id: int, request: schema.RecipeUpdate, db: Session = Depends(get_db)):
+    return controller.update(db=db, request=request, recipe_id=recipe_id)
+
+
+@router.delete("/{recipe_id}", status_code=status.HTTP_204_NO_CONTENT)
+def delete(recipe_id: int, db: Session = Depends(get_db)):
+    return controller.delete(db=db, recipe_id=recipe_id)
