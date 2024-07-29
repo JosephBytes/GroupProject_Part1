@@ -68,26 +68,27 @@ def read_resources(db: Session = Depends(get_db)):
 
 @app.get("/resources/{resources_id}", response_model=resources, tags=["resources"])
 def read_one_resource(resources_id: int, db: Session = Depends(get_db)):
-    resource = resources.read_one(db, item_id=resources_id)
+    resource = resources.read_one(db, resource_id=resources_id)
     if resource is None:
         raise HTTPException(status_code=404, detail="User not found")
     return resource
 
 
-@app.put("/resources/{resources_id}", response_model=resources.Resource, tags=["Resource"])
-def update_one_resource(resources_id: int, resource: resources.ResourceUpdate, db: Session = Depends(get_db)):
-    resource_db = resource.read_one(db, item_id=resources_id)
+@app.put("/resources/{resources_id}", response_model=resources, tags=["resources"])
+def update_one_resource(resources_id: int, resource: resources.update, db: Session = Depends(get_db)):
+    resource_db = resource.read_one(db, resources_id=resources_id)
     if resource_db is None:
         raise HTTPException(status_code=404, detail="User not found")
-    return resource.update(db=db, resource=resource, item_id=resources_id)
+    return resource.update(db=db, resource=resource, resource_id=resources_id)
 
 
-@app.delete("/resources/{resources_id}", tags=["Resource"])
+@app.delete("/resources/{resources_id}", tags=["resources"])
 def delete_one_resource(resources_id: int, db: Session = Depends(get_db)):
-    resource = resources.read_one(db, item_id=resources_id)
+    resource = resources.read_one(db, resource_id=resources_id)
     if resource is None:
         raise HTTPException(status_code=404, detail="User not found")
     return resource.delete(db=db, resources_id=resources_id)
+
 
 #recipes
 @app.post("/recipes/", response_model=recipes.Recipe, tags=["Recipe"])
