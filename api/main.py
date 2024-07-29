@@ -169,7 +169,7 @@ def read_account(db: Session = Depends(get_db)):
     return account.read_all(db)
 
 
-@app.get("/account/{order_id}", response_model=account.Account, tags=["account"])
+@app.get("/account/{account_id}", response_model=account.Account, tags=["account"])
 def read_one_account(account_id: int, db: Session = Depends(get_db)):
     accounts = account.read_one(db, account_id=account_id)
     if accounts is None:
@@ -203,7 +203,7 @@ def read_payment(db: Session = Depends(get_db)):
     return payment.read_all(db)
 
 
-@app.get("/account/{order_id}", response_model=payment.Payment, tags=["payment"])
+@app.get("/payment/{payment_id}", response_model=payment.Payment, tags=["payment"])
 def read_one_payment(payment_id: int, db: Session = Depends(get_db)):
     payments = payment.read_one(db, item_id=payment_id)
     if payments is None:
@@ -211,7 +211,7 @@ def read_one_payment(payment_id: int, db: Session = Depends(get_db)):
     return payments
 
 
-@app.put("/account/{account_id}", response_model=payment.Payment, tags=["payment"])
+@app.put("/payment/{payment_id}", response_model=payment.Payment, tags=["payment"])
 def update_one_payment(payment_id: int, payment: payment.PaymentUpdate, db: Session = Depends(get_db)):
     payment_db = payment.read_one(db, item_id=payment_id)
     if payment_db is None:
@@ -237,28 +237,28 @@ def read_promotions(db: Session = Depends(get_db)):
     return promotions.read_all(db)
 
 
-@app.get("/promotions/{order_id}", response_model=promotions.Promotions, tags=["promotions"])
-def read_one_promotions(promotions_id: int, db: Session = Depends(get_db)):
-    promotion = promotions.read_one(db, item_id=promotions_id)
+@app.get("/promotions/{promotion_id}", response_model=promotions.Promotions, tags=["promotions"])
+def read_one_promotions(promotion_id: int, db: Session = Depends(get_db)):
+    promotion = promotions.read_one(db, item_id=promotion_id)
     if promotion is None:
         raise HTTPException(status_code=404, detail="User not found")
     return promotion
 
 
-@app.put("/promotions/{account_id}", response_model=promotions.Promotions, tags=["promotions"])
-def update_one_promotions(promotions_id: int, promotions: promotions.PromotionsUpdate, db: Session = Depends(get_db)):
-    promotions_db = promotions.read_one(db, item_id=promotions_id)
+@app.put("/promotions/{promotion_id}", response_model=promotions.Promotions, tags=["promotions"])
+def update_one_promotions(promotion_id: int, promotions: promotions.PromotionsUpdate, db: Session = Depends(get_db)):
+    promotions_db = promotions.read_one(db, item_id=promotion_id)
     if promotions_db is None:
         raise HTTPException(status_code=404, detail="User not found")
-    return promotions.update(db=db, promotions=promotions, item_id=promotions_id)
+    return promotions.update(db=db, promotions=promotions, item_id=promotion_id)
 
 
 @app.delete("/promotions/{promotion_id}", tags=["promotions"])
-def delete_one_promotion(promotions_id: int, db: Session = Depends(get_db)):
-    promotion = promotions.read_one(db, item_id=promotions_id)
+def delete_one_promotion(promotion_id: int, db: Session = Depends(get_db)):
+    promotion = promotions.read_one(db, item_id=promotion_id)
     if promotion is None:
         raise HTTPException(status_code=404, detail="User not found")
-    return promotions.delete(db=db, item_id=menu_item)
+    return promotions.delete(db=db, item_id=promotion_id)
 
 #menu idems
 @app.post("/menu_item/", response_model=menu_item.Items, tags=["items"])
@@ -293,7 +293,6 @@ def delete_one_item(dish_id: int, db: Session = Depends(get_db)):
     if item is None:
         raise HTTPException(status_code=404, detail="User not found")
     return item.delete(db=db, item_id=dish_id)
-
 
 
 model_loader.index()
