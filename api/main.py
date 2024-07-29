@@ -165,12 +165,12 @@ def delete_one_order_detail(order_details_id: int, db: Session):
 
 #accounts
 @app.get("/account/", response_model=list[account.Account], tags=["account"])
-def read_account(db: Session):
+def read_account(db: Session = Depends(get_db)):
     return account.read_all(db)
 
 
 @app.get("/account/{order_id}", response_model=account.Account, tags=["account"])
-def read_one_account(account_id: int, db: Session):
+def read_one_account(account_id: int, db: Session = Depends(get_db)):
     accounts = account.read_one(db, item_id=account_id)
     if accounts is None:
         raise HTTPException(status_code=404, detail="User not found")
@@ -178,7 +178,7 @@ def read_one_account(account_id: int, db: Session):
 
 
 @app.put("/account/{account_id}", response_model=account.Account, tags=["account"])
-def update_one_account(account_id: int, account: account.AccountUpdate, db: Session):
+def update_one_account(account_id: int, account: account.AccountUpdate, db: Session = Depends(get_db)):
     account_db = account.read_one(db, item_id=account_id)
     if account_db is None:
         raise HTTPException(status_code=404, detail="User not found")
@@ -186,7 +186,7 @@ def update_one_account(account_id: int, account: account.AccountUpdate, db: Sess
 
 
 @app.delete("/account/{account_id}", tags=["account"])
-def delete_one_account(account_id: int, db: Session):
+def delete_one_account(account_id: int, db: Session = Depends(get_db)):
     accounts = account.read_one(db, item_id=account_id)
     if accounts is None:
         raise HTTPException(status_code=404, detail="User not found")
@@ -259,6 +259,41 @@ def delete_one_promotion(promotions_id: int, db: Session):
     if promotion is None:
         raise HTTPException(status_code=404, detail="User not found")
     return promotions.delete(db=db, item_id=menu_item)
+
+#menu idems
+@app.post("/menu_item/", response_model=menu_item.Items, tags=["items"])
+def create_item(item: menu_item.ItemsCreate, db: Session ):
+    return item.create(db=db, item=item)
+
+
+@app.get("/menu_item/", response_model=list[menu_item.Items], tags=["items"])
+def read_items(db: Session):
+    return menu_item.read_all(db)
+
+
+@app.get("/menu_item/{dish_id}", response_model=menu_item.Items, tags=["items"])
+def read_one_item(dish_id: int, db: Session):
+    item = menu_item.read_one(db, item_id=dish_id)
+    if item is None:
+        raise HTTPException(status_code=404, detail="User not found")
+    return item
+
+
+@app.put("/menu_item/{dish_id}", response_model=menu_item.Items, tags=["items"])
+def update_one_item(dish_id: int, item: menu_item.ItemsUpdate, db: Session):
+    item_db = item.read_one(db, item_id=dish_id)
+    if item_db is None:
+        raise HTTPException(status_code=404, detail="User not found")
+    return item.update(db=db, item=item, item_id=dish_id)
+
+
+@app.delete("/menu_item/{dish_id}", tags=["items"])
+def delete_one_item(dish_id: int, db: Session):
+    item = menu_item.read_one(db, item_id=dish_id)
+    if item is None:
+        raise HTTPException(status_code=404, detail="User not found")
+    return item.delete(db=db, item_id=dish_id)
+
 
 
 model_loader.index()
