@@ -4,7 +4,6 @@ from ..models import account as model
 from sqlalchemy.exc import SQLAlchemyError
 
 
-
 def create(db: Session, request):
     new_item = model.Account(
         email=request.email,
@@ -35,9 +34,9 @@ def read_all(db: Session):
     return result
 
 
-def read_one(db: Session, item_id):
+def read_one(db: Session, account_id):
     try:
-        item = db.query(model.Account).filter(model.Account.id == item_id).first()
+        item = db.query(model.Account).filter(model.Account.account_id == account_id).first()
         if not item:
             raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Id not found!")
     except SQLAlchemyError as e:
@@ -46,9 +45,9 @@ def read_one(db: Session, item_id):
     return item
 
 
-def update(db: Session, item_id, request):
+def update(db: Session, account_id, request):
     try:
-        item = db.query(model.Account).filter(model.Account.id == item_id)
+        item = db.query(model.Account).filter(model.Account.account_id == account_id)
         if not item.first():
             raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Id not found!")
         update_data = request.dict(exclude_unset=True)
@@ -60,9 +59,9 @@ def update(db: Session, item_id, request):
     return item.first()
 
 
-def delete(db: Session, item_id):
+def delete(db: Session, account_id):
     try:
-        item = db.query(model.Account).filter(model.Account.id == item_id)
+        item = db.query(model.Account).filter(model.Account.account_id == account_id)
         if not item.first():
             raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Id not found!")
         item.delete(synchronize_session=False)
