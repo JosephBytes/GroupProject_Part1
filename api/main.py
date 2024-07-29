@@ -21,17 +21,17 @@ app.add_middleware(
 
 
 #orders
-@app.post("/orders/", response_model=schemas.Order, tags=["orders"])
-def create_order(order: schemas.OrderCreate, db: Session = Depends(get_db)):
+@app.post("/orders/", response_model=orders, tags=["orders"])
+def create_order(order: orders.create, db: Session = Depends(get_db)):
     return order.create(db=db, order=order)
 
 
-@app.get("/orders/", response_model=list[sch.Order], tags=["orders"])
+@app.get("/orders/", response_model=list[orders], tags=["orders"])
 def read_account(db: Session = Depends(get_db)):
-    return account.read_all(db)
+    return orders.read_all(db)
 
 
-@app.get("/orders/{order_id}", response_model=orders.Order, tags=["orders"])
+@app.get("/orders/{order_id}", response_model=orders, tags=["orders"])
 def read_one_order(order_id: int, db: Session = Depends(get_db)):
     order = orders.read_one(db,  order_id=order_id)
     if order is None:
@@ -39,20 +39,21 @@ def read_one_order(order_id: int, db: Session = Depends(get_db)):
     return order
 
 
-@app.put("/orders/{order_id}", response_model=orders.Order, tags=["orders"])
-def update_one_order(order_id: int, order: orders.OrderUpdate, db: Session = Depends(get_db)):
+@app.put("/orders/{order_id}", response_model=orders, tags=["orders"])
+def update_one_order(order_id: int, order: orders.update, db: Session = Depends(get_db)):
     order_db = orders.read_one(db, order_id=order_id)
     if order_db is None:
         raise HTTPException(status_code=404, detail="User not found")
-    return order.update(db=db, order=order,  item_id=order_id)
+    return order.update(db=db, order=order,  order_id=order_id)
 
 
 @app.delete("/orders/{order_id}", tags=["orders"])
 def delete_one_order(order_id: int, db: Session = Depends(get_db)):
-    order = account.read_one(db, item_id=order_id)
+    order = orders.read_one(db, order_id=order_id)
     if order is None:
         raise HTTPException(status_code=404, detail="User not found")
-    return account.delete(db=db, item_id=menu_item)
+    return orders.delete(db=db, order_id=order_id)
+
 
 #resources
 @app.get("/resources/", response_model=list[resources.Resource], tags=["Resource"])
