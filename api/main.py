@@ -56,12 +56,17 @@ def delete_one_order(order_id: int, db: Session = Depends(get_db)):
 
 
 #resources
-@app.get("/resources/", response_model=list[resources.Resource], tags=["Resource"])
+@app.post("/resources/", response_model=resources, tags=["resources"])
+def create_resource(resource: resources.create, db: Session = Depends(get_db)):
+    return resource.create(db=db, resource=resource)
+
+
+@app.get("/resources/", response_model=list[resources], tags=["resources"])
 def read_resources(db: Session = Depends(get_db)):
     return resources.read_all(db)
 
 
-@app.get("/resources/{resources_id}", response_model=resources.Resource, tags=["Resource"])
+@app.get("/resources/{resources_id}", response_model=resources, tags=["resources"])
 def read_one_resource(resources_id: int, db: Session = Depends(get_db)):
     resource = resources.read_one(db, item_id=resources_id)
     if resource is None:
