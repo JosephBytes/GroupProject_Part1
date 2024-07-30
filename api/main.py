@@ -3,11 +3,11 @@ from fastapi import Depends, FastAPI, HTTPException
 from sqlalchemy.orm import Session
 from fastapi.middleware.cors import CORSMiddleware
 
-from .models import account, menu_item, model_loader, order_details, orders, payment, promotions, recipes, resources
-from .controllers import orders, menu_item, order_details, account, payment, promotions, recipes, resources
-from .dependencies.config import conf
-from .routers import index
-from .dependencies.database import engine, get_db
+from api.models import account, menu_item, model_loader, order_details, orders, payment, promotions, recipes, resources
+from api.controllers import orders, menu_item, order_details, account, payment, promotions, recipes, resources
+from api.dependencies.config import conf
+from api.routers import index
+from api.dependencies.database import engine, get_db
 
 app = FastAPI()
 
@@ -23,17 +23,17 @@ app.add_middleware(
 
 
 # orders
-@app.post("/orders/", response_model=orders, tags=["orders"])
+@app.post("/orders/", response_model=orders, tags=["Orders"])
 def create_order(order: orders.create, db: Session = Depends(get_db)):
     return order.create(db=db, order=order)
 
 
-@app.get("/orders/", response_model=list[orders], tags=["orders"])
+@app.get("/orders/", response_model=list[orders], tags=["Orders"])
 def read_account(db: Session = Depends(get_db)):
     return orders.read_all(db)
 
 
-@app.get("/orders/{order_id}", response_model=orders, tags=["orders"])
+@app.get("/orders/{order_id}", response_model=orders, tags=["Orders"])
 def read_one_order(order_id: int, db: Session = Depends(get_db)):
     order = orders.read_one(db, order_id=order_id)
     if order is None:
@@ -41,7 +41,7 @@ def read_one_order(order_id: int, db: Session = Depends(get_db)):
     return order
 
 
-@app.put("/orders/{order_id}", response_model=orders, tags=["orders"])
+@app.put("/orders/{order_id}", response_model=orders, tags=["Orders"])
 def update_one_order(order_id: int, order: orders.update, db: Session = Depends(get_db)):
     order_db = orders.read_one(db, order_id=order_id)
     if order_db is None:
@@ -49,7 +49,7 @@ def update_one_order(order_id: int, order: orders.update, db: Session = Depends(
     return order.update(db=db, order=order, order_id=order_id)
 
 
-@app.delete("/orders/{order_id}", tags=["orders"])
+@app.delete("/orders/{order_id}", tags=["Orders"])
 def delete_one_order(order_id: int, db: Session = Depends(get_db)):
     order = orders.read_one(db, order_id=order_id)
     if order is None:
