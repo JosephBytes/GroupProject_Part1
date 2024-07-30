@@ -164,7 +164,7 @@ def delete_one_order_detail(order_details_id: int, db: Session = Depends(get_db)
     return order_detail.delete(db=db, order_details_id=order_details_id)
 
 
-#accounts
+# accounts
 @app.get("/account/", response_model=list[account.Account], tags=["account"])
 def read_account(db: Session = Depends(get_db)):
     return account.read_all(db)
