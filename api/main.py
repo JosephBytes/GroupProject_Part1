@@ -3,10 +3,11 @@ from fastapi import Depends, FastAPI, HTTPException
 from sqlalchemy.orm import Session
 from fastapi.middleware.cors import CORSMiddleware
 
-from .models import account, menu_item, model_loader, order_details, orders, payment, promotions, recipes, resources
+from .models import account, menu_item, order_details, orders, payment, promotions, recipes, resources
+from .schemas import account, menu_item, order_details, orders, payment, promotions, recipes, resources
 from .controllers import orders, menu_item, order_details, account, payment, promotions, recipes, resources
 from .dependencies.config import conf
-from .routers import index
+from .routers import orders, menu_item, order_details, account, payment, promotions, recipes, resources
 from .dependencies.database import engine, get_db
 
 app = FastAPI()
@@ -128,17 +129,17 @@ def delete_one_recipe(recipes_id: int, recipe: recipes.delete, db: Session = Dep
 
 
 # order_details
-@app.post("/order_details/", response_model=order_details.OrderDetail, tags=["OrderDetail"])
-def create_order_detail(order_detail: order_details.OrderDetailCreate, db: Session = Depends(get_db)):
-    return order_detail.create(db=db, item_id=order_detail)
+@app.post("/order_details/", response_model=order_details, tags=["OrderDetail"])
+def create_order_detail(order_detail: order_details.create, db: Session = Depends(get_db)):
+    return order_details.create(db=db, order_detail=order_detail)
 
 
-@app.get("/order_details/", response_model=list[order_details.OrderDetail], tags=["OrderDetail"])
+@app.get("/order_details/", response_model=list[order_details], tags=["OrderDetail"])
 def read_order_details(db: Session = Depends(get_db)):
     return order_details.read_all(db)
 
 
-@app.get("/order_details/{order_details_id}", response_model=order_details.OrderDetail, tags=["OrderDetail"])
+@app.get("/order_details/{order_details_id}", response_model=order_details, tags=["OrderDetail"])
 def read_one_order_detail(order_details_id: int, db: Session = Depends(get_db)):
     order_detail = order_details.read_one(db, tracking_order_id=order_details_id)
     if order_detail is None:
@@ -146,13 +147,13 @@ def read_one_order_detail(order_details_id: int, db: Session = Depends(get_db)):
     return order_detail
 
 
-@app.put("/order_details/{order_details_id}", response_model=order_details.OrderDetail, tags=["OrderDetail"])
-def update_one_order_detail(order_details_id: int, order_detail: order_details.OrderDetailUpdate,
+@app.put("/order_details/{order_details_id}", response_model=order_details, tags=["OrderDetail"])
+def update_one_order_detail(order_details_id: int, order_detail: update_one_order,
                             db: Session = Depends(get_db)):
-    order_detail_db = order_detail.read_one(db, order_details_id=order_details_id)
+    order_detail_db = order_detail.read_one(db, tracking_order_id=order_details_id)
     if order_detail_db is None:
         raise HTTPException(status_code=404, detail="User not found")
-    return order_detail.update(db=db, order_detail=order_detail, order_details_id=order_details_id)
+    return order_detail.update(db=db, order_detail=order_detail, tracking_order_id=order_details_id)
 
 
 @app.delete("/order_details/{order_details_id}", tags=["OrderDetail"])
