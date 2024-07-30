@@ -3,12 +3,12 @@ from fastapi import Depends, FastAPI, HTTPException
 from sqlalchemy.orm import Session
 from fastapi.middleware.cors import CORSMiddleware
 
-from .models import account, menu_item, order_details, orders, payment, promotions, recipes, resources, model_loader
-from .schemas import account, menu_item, order_details, orders, payment, promotions, recipes, resources
-from .controllers import orders, menu_item, order_details, account, payment, promotions, recipes, resources
-from .dependencies.config import conf
-from .routers import orders, menu_item, order_details, account, payment, promotions, recipes, resources, index
-from .dependencies.database import engine, get_db
+from api.models import account, menu_item, order_details, orders, payment, promotions, recipes, resources, model_loader
+from api.schemas import account, menu_item, order_details, orders, payment, promotions, recipes, resources
+from api.controllers import orders, menu_item, order_details, account, payment, promotions, recipes, resources
+from api.dependencies.config import conf
+from api.routers import orders, menu_item, order_details, account, payment, promotions, recipes, resources, index
+from api.dependencies.database import engine, get_db
 
 app = FastAPI()
 
@@ -165,12 +165,12 @@ def delete_one_order_detail(order_details_id: int, db: Session = Depends(get_db)
 
 
 # accounts
-@app.get("/account/", response_model=list[account.Account], tags=["account"])
+@app.get("/account/", response_model=list[account], tags=["account"])
 def read_account(db: Session = Depends(get_db)):
     return account.read_all(db)
 
 
-@app.get("/account/{account_id}", response_model=account.Account, tags=["account"])
+@app.get("/account/{account_id}", response_model=account, tags=["account"])
 def read_one_account(account_id: int, db: Session = Depends(get_db)):
     accounts = account.read_one(db, account_id=account_id)
     if accounts is None:
@@ -178,8 +178,8 @@ def read_one_account(account_id: int, db: Session = Depends(get_db)):
     return accounts
 
 
-@app.put("/account/{account_id}", response_model=account.Account, tags=["account"])
-def update_one_account(account_id: int, account: account.AccountUpdate, db: Session = Depends(get_db)):
+@app.put("/account/{account_id}", response_model=account, tags=["account"])
+def update_one_account(account_id: int, account: account.update, db: Session = Depends(get_db)):
     account_db = account.read_one(db, item_id=account_id)
     if account_db is None:
         raise HTTPException(status_code=404, detail="User not found")
@@ -195,17 +195,17 @@ def delete_one_account(account_id: int, db: Session = Depends(get_db)):
 
 
 #payment
-@app.post("/payment/", response_model=payment.Payment, tags=["payments"])
-def create_payments(payment: payment.PaymentCreate, db: Session = Depends(get_db)):
+@app.post("/payment/", response_model=payment, tags=["payments"])
+def create_payments(payment: payment.create, db: Session = Depends(get_db)):
     return payment.create(db=db, payment=payment)
 
 
-@app.get("/payment/", response_model=list[account.Payment], tags=["payment"])
+@app.get("/payment/", response_model=list[account], tags=["payment"])
 def read_payment(db: Session = Depends(get_db)):
     return payment.read_all(db)
 
 
-@app.get("/payment/{payment_id}", response_model=payment.Payment, tags=["payment"])
+@app.get("/payment/{payment_id}", response_model=payment, tags=["payment"])
 def read_one_payment(payment_id: int, db: Session = Depends(get_db)):
     payments = payment.read_one(db, item_id=payment_id)
     if payments is None:
@@ -213,8 +213,8 @@ def read_one_payment(payment_id: int, db: Session = Depends(get_db)):
     return payments
 
 
-@app.put("/payment/{payment_id}", response_model=payment.Payment, tags=["payment"])
-def update_one_payment(payment_id: int, payment: payment.PaymentUpdate, db: Session = Depends(get_db)):
+@app.put("/payment/{payment_id}", response_model=payment, tags=["payment"])
+def update_one_payment(payment_id: int, payment: payment.update, db: Session = Depends(get_db)):
     payment_db = payment.read_one(db, item_id=payment_id)
     if payment_db is None:
         raise HTTPException(status_code=404, detail="User not found")
@@ -230,17 +230,17 @@ def delete_one_payment(payment_id: int, db: Session = Depends(get_db)):
 
 
 #promotions
-@app.post("/promotions/", response_model=promotions.Promotions, tags=["promotions"])
-def create_promotions(promotions: promotions.PromotionsCreate, db: Session = Depends(get_db)):
+@app.post("/promotions/", response_model=promotions, tags=["promotions"])
+def create_promotions(promotions: promotions.create, db: Session = Depends(get_db)):
     return promotions.create(db=db, promotions=promotions)
 
 
-@app.get("/promotions/", response_model=list[promotions.Promotions], tags=["promotions"])
+@app.get("/promotions/", response_model=list[promotions], tags=["promotions"])
 def read_promotions(db: Session = Depends(get_db)):
     return promotions.read_all(db)
 
 
-@app.get("/promotions/{promotion_id}", response_model=promotions.Promotions, tags=["promotions"])
+@app.get("/promotions/{promotion_id}", response_model=promotions, tags=["promotions"])
 def read_one_promotions(promotion_id: int, db: Session = Depends(get_db)):
     promotion = promotions.read_one(db, item_id=promotion_id)
     if promotion is None:
@@ -248,8 +248,8 @@ def read_one_promotions(promotion_id: int, db: Session = Depends(get_db)):
     return promotion
 
 
-@app.put("/promotions/{promotion_id}", response_model=promotions.Promotions, tags=["promotions"])
-def update_one_promotions(promotion_id: int, promotions: promotions.PromotionsUpdate, db: Session = Depends(get_db)):
+@app.put("/promotions/{promotion_id}", response_model=promotions, tags=["promotions"])
+def update_one_promotions(promotion_id: int, promotions: promotions.update, db: Session = Depends(get_db)):
     promotions_db = promotions.read_one(db, item_id=promotion_id)
     if promotions_db is None:
         raise HTTPException(status_code=404, detail="User not found")
@@ -265,17 +265,17 @@ def delete_one_promotion(promotion_id: int, db: Session = Depends(get_db)):
 
 
 #menu idems
-@app.post("/menu_item/", response_model=menu_item.Items, tags=["items"])
-def create_item(item: menu_item.ItemsCreate, db: Session = Depends(get_db)):
+@app.post("/menu_item/", response_model=menu_item, tags=["items"])
+def create_item(item: menu_item.create, db: Session = Depends(get_db)):
     return item.create(db=db, item=item)
 
 
-@app.get("/menu_item/", response_model=list[menu_item.Items], tags=["items"])
+@app.get("/menu_item/", response_model=list[menu_item], tags=["items"])
 def read_items(db: Session = Depends(get_db)):
     return menu_item.read_all(db)
 
 
-@app.get("/menu_item/{dish_id}", response_model=menu_item.Items, tags=["items"])
+@app.get("/menu_item/{dish_id}", response_model=menu_item, tags=["items"])
 def read_one_item(dish_id: int, db: Session = Depends(get_db)):
     item = menu_item.read_one(db, dish_id=dish_id)
     if item is None:
@@ -283,8 +283,8 @@ def read_one_item(dish_id: int, db: Session = Depends(get_db)):
     return item
 
 
-@app.put("/menu_item/{dish_id}", response_model=menu_item.Items, tags=["items"])
-def update_one_item(dish_id: int, item: menu_item.ItemsUpdate, db: Session = Depends(get_db)):
+@app.put("/menu_item/{dish_id}", response_model=menu_item, tags=["items"])
+def update_one_item(dish_id: int, item: menu_item.update, db: Session = Depends(get_db)):
     item_db = item.read_one(db, item_id=dish_id)
     if item_db is None:
         raise HTTPException(status_code=404, detail="User not found")
