@@ -3,11 +3,11 @@ from fastapi import Depends, FastAPI, HTTPException
 from sqlalchemy.orm import Session
 from fastapi.middleware.cors import CORSMiddleware
 
-from .models import account, menu_item, order_details, orders, payment, promotions, recipes, resources
+from .models import account, menu_item, order_details, orders, payment, promotions, recipes, resources, model_loader
 from .schemas import account, menu_item, order_details, orders, payment, promotions, recipes, resources
 from .controllers import orders, menu_item, order_details, account, payment, promotions, recipes, resources
 from .dependencies.config import conf
-from .routers import orders, menu_item, order_details, account, payment, promotions, recipes, resources
+from .routers import orders, menu_item, order_details, account, payment, promotions, recipes, resources, index
 from .dependencies.database import engine, get_db
 
 app = FastAPI()
