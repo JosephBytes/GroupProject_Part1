@@ -5,6 +5,7 @@ from fastapi.middleware.cors import CORSMiddleware
 
 from api.models import account, menu_item, model_loader, order_details, orders, payment, promotions, recipes, resources
 from api.controllers import orders, menu_item, order_details, account, payment, promotions, recipes, resources
+from api.routers import orders, menu_item, order_details, account, payment, promotions, recipes, resources
 from api.dependencies.config import conf
 from api.routers import index
 from api.dependencies.database import engine, get_db
