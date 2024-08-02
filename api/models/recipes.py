@@ -7,9 +7,9 @@ from ..dependencies.database import Base
 class Recipe(Base):
     __tablename__ = "recipes"
 
-    recipe_id = Column(Integer, primary_key=True, index=True, autoincrement=True)
-    dish_id = Column(Integer, ForeignKey("items.dish_id"))
-    resource_id = Column(Integer, ForeignKey("resources.id"))
+    recipe_id = Column(Integer, primary_key=True, index=True, autoincrement=True, nullable=False)
+    dish_id = Column(Integer, ForeignKey("menu_item.dish_id"), nullable=False)
+    resource_id = Column(Integer, ForeignKey("resources.resource_id"), nullable=False)
     cost = Column(Integer, index=True, nullable=False, server_default='0.0')
 
     menu_item = relationship("Items", back_populates="recipes")

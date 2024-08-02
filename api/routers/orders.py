@@ -10,7 +10,7 @@ router = APIRouter(
 )
 
 
-@router.post("/", response_model=Order)
+@router.post("/", response_model=Order, status_code=status.HTTP_201_CREATED)
 def create(request: OrderCreate, db: Session = Depends(get_db)):
     return controller.create(db=db, request=request)
 
@@ -30,6 +30,6 @@ def update(order_id: int, request: OrderUpdate, db: Session = Depends(get_db)):
     return controller.update(db=db, request=request, order_id=order_id)
 
 
-@router.delete("/{order_id}", response_model=None)
+@router.delete("/{order_id}", status_code=status.HTTP_204_NO_CONTENT)
 def delete(order_id: int,  db: Session = Depends(get_db)):
     return controller.delete(db=db, order_id=order_id)

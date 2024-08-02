@@ -7,8 +7,8 @@ from ..dependencies.database import Base
 class Account(Base):
     __tablename__ = "account"
 
-    account_id = Column(Integer, primary_key=True, index=True, autoincrement=True)
-    customer_name = Column(String(100))
+    account_id = Column(Integer, primary_key=True, index=True, autoincrement=True, nullable=False)
+    customer_name = Column(String(100), nullable=False)
     email = Column(String(100))
     phone = Column(Integer)
     address = Column(String(100))
