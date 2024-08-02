@@ -1,14 +1,15 @@
-from datetime import datetime
 from typing import Optional
 from pydantic import BaseModel
 
 
 class AccountBase(BaseModel):
+    account_id: int
     customer_name: str
 
 
 class AccountCreate(AccountBase):
     account_id: int
+    customer_name: str
     email: str
     phone: int
     address: str
@@ -23,7 +24,10 @@ class AccountUpdate(AccountBase):
 
 class Account(AccountBase):
     account_id: int
-    orders: int
+    customer_name: str
+    email: str
+    phone: int
+    address: str
 
     class Config:
         from_attributes = True

@@ -1,8 +1,8 @@
-from fastapi import APIRouter, Depends, status, Response
+from fastapi import APIRouter, Depends, status
 from sqlalchemy.orm import Session
 from ..controllers import account as controller
 from ..schemas.account import Account, AccountCreate, AccountUpdate
-from ..dependencies.database import get_db
+from ..dependencies.database import engine, get_db
 
 router = APIRouter(
     tags=['Account'],
