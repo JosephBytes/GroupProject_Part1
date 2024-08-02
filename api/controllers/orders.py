@@ -11,7 +11,8 @@ def create(db: Session, request):
         order_status=request.order_status,
         price=request.price,
         description=request.description,
-        order_id=request.order_id
+        order_id=request.order_id,
+        order_date=request.order_date
     )
 
     try:
