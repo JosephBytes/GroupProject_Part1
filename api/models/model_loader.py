@@ -11,3 +11,4 @@ def index():
     payment.Base.metadata.create_all(engine)
     promotions.Base.metadata.create_all(engine)
     account.Base.metadata.create_all(engine)
+    menu_item.Base.metadata.create_all(engine)
