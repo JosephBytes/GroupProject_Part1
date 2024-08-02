@@ -23,7 +23,7 @@ class OrderUpdate(BaseModel):
 
 
 class Order(OrderBase):
-    account_id: int
+    order_id: int
     tracking_order_id: int
 
     class ConfigDict:

@@ -15,6 +15,6 @@ class Order(Base):
     description = Column(String(300))
     order_date = Column(DATETIME)
 
-    account = relationship("Account", back_populates="order")  # account relation
-    order_details = relationship("OrderDetail", back_populates="order")  # order_details relation
+    account = relationship("Account", back_populates="orders")  # account relation
+    order_details = relationship("OrderDetail", back_populates="orders")  # order_details relation
 
