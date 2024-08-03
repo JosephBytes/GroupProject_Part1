@@ -6,8 +6,7 @@ from .models import model_loader
 from .dependencies.config import conf
 from .dependencies.database import engine, get_db
 
-app = FastAPI()
-
+app = FastAPI(debug=True)
 origins = ["*"]
 
 app.add_middleware(
@@ -23,6 +22,7 @@ index_route.load_routes(app)
 
 
 if __name__ == "__main__":
+    import uvicorn
     uvicorn.run(app, host=conf.app_host, port=conf.app_port)
 #
 # @app.post("/orders/", response_model=orders, tags=["orders"])
