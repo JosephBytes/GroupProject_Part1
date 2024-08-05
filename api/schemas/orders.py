@@ -14,7 +14,6 @@ class OrderCreate(OrderBase):
     customer_name: str
     tracking_order_id: int
     price: Decimal
-    order_date: datetime
     description: str
     order_status: str
 
@@ -23,7 +22,6 @@ class OrderUpdate(BaseModel):
     customer_name: Optional[str] = None
     tracking_order_id: Optional[int] = None
     order_status: Optional[str] = None
-    order_date: Optional[datetime] = None
     price: Optional[Decimal] = None
     description: Optional[str] = None
 

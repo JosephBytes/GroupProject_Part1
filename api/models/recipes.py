@@ -8,7 +8,7 @@ class Recipe(Base):
     __tablename__ = "recipes"
 
     recipe_id = Column(Integer, primary_key=True, index=True, autoincrement=True, nullable=False)
-    dish_id = Column(Integer, ForeignKey("menu_item.dish_id"), nullable=False)
+    dish_id = Column(Integer, ForeignKey("Items.dish_id"), nullable=False)
     resource_id = Column(Integer, ForeignKey("resources.resource_id"), nullable=False)
     cost = Column(Integer, index=True, nullable=False, server_default='0.0')
 

@@ -8,7 +8,8 @@ def create(db: Session, request):
     new_item = model.Payment(
         card_number=request.card_number,
         status=request.status,
-        payment_type=request.payment_type
+        payment_type=request.payment_type,
+        date=request.date
     )
 
     try:

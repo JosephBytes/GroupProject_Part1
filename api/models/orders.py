@@ -8,10 +8,9 @@ class Order(Base):
     __tablename__ = "orders"
 
     order_id = Column(Integer, primary_key=True, index=True, autoincrement=True, nullable=False)
-    customer_name = Column(String, ForeignKey("account.customer_name"), nullable=False)
+    account_id = Column(Integer, ForeignKey("account.account_id"), nullable=False)
     tracking_order_id = Column(Integer, ForeignKey("order_details.tracking_order_id"), nullable=False)
     order_status = Column(String(15), nullable=False)
-    price = Column(DECIMAL, ForeignKey("order_details.price"), nullable=False)
     description = Column(String(300), nullable=False)
     order_date = Column(DATETIME, default=datetime.now())
 
