@@ -35,7 +35,7 @@ def read_all(db: Session):
     return result
 
 
-def read_one(db: Session,  ):
+def read_one(db: Session, order_id ):
     try:
         item = db.query(model.Order).filter(model.Order.order_id == order_id).first()
         if not item:
