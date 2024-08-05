@@ -31,3 +31,7 @@ class Account(AccountBase):
 
     class Config:
         from_attributes = True
+
+
+class Feedback:
+    pass
