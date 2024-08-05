@@ -4,7 +4,7 @@ from datetime import datetime
 from ..dependencies.database import Base
 
 
-class Account(Base):
+class Feedback(Base):
     __tablename__ = "feedback"
 
     review_id = Column(Integer, primary_key=True, index=True, autoincrement=True, nullable=False)
