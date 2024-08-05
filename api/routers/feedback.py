@@ -1,6 +1,6 @@
 from fastapi import FastAPI, HTTPException, APIRouter, Depends, status
 from sqlalchemy.orm import Session
-from ..controllers import account as controller
+from ..controllers import feedback as controller
 from ..schemas.feedback import Feedback, FeedbackCreate, FeedbackUpdate
 from ..dependencies.database import engine, get_db
 
@@ -64,7 +64,7 @@ def read_one(review_id: int, db: Session = Depends(get_db)):
 @router.put("/{review_id}", response_model=Feedback)
 def update(review_id: int, request: FeedbackUpdate, db: Session = Depends(get_db)):
     try:
-        updated = controller.update(db=db, request=request, account_id=review_id)
+        updated = controller.update(db=db, request=request, review_id=review_id)
         if updated is None:
             raise HTTPException(
                 status_code=status.HTTP_404_NOT_FOUND,
@@ -81,7 +81,7 @@ def update(review_id: int, request: FeedbackUpdate, db: Session = Depends(get_db
 @router.delete("/{review_id}", status_code=status.HTTP_204_NO_CONTENT)
 def delete(review_id: int, db: Session = Depends(get_db)):
     try:
-        deleted = controller.delete(db=db, account_id=review_id)
+        deleted = controller.delete(db=db, review_id=review_id)
         if deleted is None:
             raise HTTPException(
                 status_code=status.HTTP_404_NOT_FOUND,
