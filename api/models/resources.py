@@ -10,5 +10,6 @@ class Resource(Base):
     resource_id = Column(Integer, primary_key=True, index=True, autoincrement=True, nullable=False)
     ingredient_name = Column(String(100), unique=True, nullable=False)
     cost = Column(Integer, index=True, nullable=False, server_default='0.0')
+    recipe_id = Column(Integer, ForeignKey("recipes.recipe_id"), nullable=False)
 
-    recipes = relationship("Recipe", back_populates="resource")
+    recipes = relationship("Recipe", back_populates="resources")

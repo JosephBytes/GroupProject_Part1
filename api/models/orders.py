@@ -16,4 +16,4 @@ class Order(Base):
 
     account = relationship("Account", back_populates="orders")  # account relation
     order_details = relationship("OrderDetail", back_populates="orders")  # order_details relation
-
+    payment = relationship("Payment", back_populates="order")

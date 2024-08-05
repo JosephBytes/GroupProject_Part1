@@ -9,6 +9,7 @@ class PaymentBase(BaseModel):
 
 class PaymentCreate(PaymentBase):
     payment_type: Optional[str]
+    order_id: int
 
 
 class PaymentUpdate(BaseModel):
